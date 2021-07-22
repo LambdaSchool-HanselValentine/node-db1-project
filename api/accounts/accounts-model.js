@@ -1,14 +1,20 @@
 const db = require("../../data/db-config");
 
-const getAll = () => {
+const getAll = async () => {
 	// DO YOUR MAGIC
-	return db("accounts");
+	const accounts = await db("accounts");
+	return accounts;
 };
 
 const getById = (id) => {
 	// DO YOUR MAGIC
 	const account = db.first("*").from("accounts").where({ id });
 	return account;
+};
+
+// getbyname for the middleware
+const getByName = (name) => {
+	return db.first("*").from("accounts").where({ name });
 };
 
 const create = async (account) => {
@@ -23,19 +29,21 @@ const updateById = async (id, account) => {
 		.update(account)
 		.from("accounts")
 		.where({ id });
-	console.log(updatedAccount, "updated acc");
+	console.log(updatedAccount, "UPDATED ACCOUNT");
 	return updatedAccount;
 };
 
 const deleteById = async (id) => {
 	// DO YOUR MAGIC
+	const toBeDeleted = await getById(id);
 	const deleted = await db("accounts").del().where({ id });
-	return deleted;
+	return toBeDeleted;
 };
 
 module.exports = {
 	getAll,
 	getById,
+	getByName,
 	create,
 	updateById,
 	deleteById,
