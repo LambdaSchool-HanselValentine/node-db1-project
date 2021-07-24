@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const db = require("../../data/db-config");
 
 const getAll = async () => {

@@ -18,15 +18,20 @@ router.get("/:id", Middleware.checkAccountId, (req, res, next) => {
 	}
 });
 
-router.post("/", Middleware.checkAccountPayload, (req, res, next) => {
-	const body = req.body;
+router.post(
+	"/",
+	Middleware.checkAccountPayload,
+	Middleware.checkAccountNameUnique,
+	(req, res, next) => {
+		const body = req.body;
 
-	Accounts.create(body)
-		.then((newAccId) => {
-			res.status(201).json(newAccId);
-		})
-		.catch(next);
-});
+		Accounts.create(body)
+			.then((newAccId) => {
+				res.status(201).json(newAccId);
+			})
+			.catch(next);
+	},
+);
 
 router.put(
 	"/:id",
@@ -58,6 +63,7 @@ router.delete("/:id", Middleware.checkAccountId, (req, res, next) => {
 	}
 });
 
+// eslint-disable-next-line no-unused-vars
 router.use((err, req, res, next) => {
 	// eslint-disable-line
 	const message = err?.message || "Something went wrong in the Accounts router";
